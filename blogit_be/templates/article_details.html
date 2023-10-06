@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block content %} {% block title %} Django BlogIT
+{%endblock %}
+
+<h1>{{post.title}}</h1>
+<small>By {{post.author.first_name}} {{ post.author.last_name}} - {{ post.post_date }}</small>
+<br />
+<small
+  ><a href="{% url 'update_post' post.pk %}">(Edit)</a>
+
+  <a href="{% url 'delete_post' post.pk %}">(Delete)</a>
+</small>
+<hr />
+<br />
+{{ post.body | safe}}
+<br />
+<a href="{% url 'index' %}" class="btn btn-info">Back</a>
+
+{% endblock %}

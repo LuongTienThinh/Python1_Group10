@@ -1,0 +1,13 @@
+{% extends 'base.html' %} {% block content %} {% if user.is_authenticated %}
+<h1>Update Post...</h1>
+<div class="form-group">
+  <form method="post">
+    {% csrf_token %} {{ form.as_p }}
+
+    <button class="btn btn-info">Update</button>
+  </form>
+</div>
+{% else %}
+<h1>You are not allow to update because you aren't login</h1>
+
+{% endif %} {% endblock %}
