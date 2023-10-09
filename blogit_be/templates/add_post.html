@@ -3,10 +3,17 @@
 <h1>Add Post...</h1>
 <div class="form-group">
   <form method="post">
-    {% csrf_token %} {{ form.as_p }}
-
+    {% csrf_token %} {{ form.media}}  {{ form.as_p }}
+    <label for="checkbox">Publish</label>
+    <input type="checkbox" id="toggleButton" name="checkbox" {% if post.is_published %} checked{% endif %}>
+    <br><br>
     <button class="btn btn-info">Add Post</button>
+    <br>
   </form>
 </div>
 
+<script>
+  var name = "{{ user.id }}";
+  document.getElementById("elder").value = name;
+</script>
 {% endblock %}

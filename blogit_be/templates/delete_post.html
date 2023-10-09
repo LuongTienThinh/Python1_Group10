@@ -5,7 +5,8 @@
 <br>
 <h3>Delete: {{ post.title }} </h3>
 <div class="form-group">
-
+{% if user.is_authenticated %}
+    {% if user.id == post.author.id %}
     <form  method="post">
         {% csrf_token %} 
         <br>
@@ -13,6 +14,10 @@
         <br>
         <button  class="btn btn-info">Delete Post</button>
     </form>
+    {% endif %}
+{% else %}
+    <h1> You are not allow to delete this post because you are not this post's author</h1>
+{% endif %}
 </div>
 
 

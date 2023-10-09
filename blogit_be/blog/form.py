@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post,Category
+from .models import Post,Category,Comment
 
 
 # cats = [('conding','coding'),('sports','sports'),('entertainment','entertainment')]
@@ -12,19 +12,33 @@ for item in choices:
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title','author','category','body')
+        fields = ('title','author','category','body','snippet')
         widgets = {
             'title': forms.TextInput(attrs={'class':'form-control','placeholder':"Type your title"}),
-            'author': forms.Select(attrs={'class':'form-control'}),
+            'author': forms.TextInput(attrs={'class':'form-control','id':'elder','type':'hidden'}),
+            # 'author': forms.Select(attrs={'class':'form-control'}),
             'category': forms.Select( choices=choice_list, attrs={'class':'form-control'}),
             'body': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your content"}),
+            'snippet': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your snippet title"}),
+            'is_published': forms.BooleanField()
         }
 
 class EditForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title','body')
+        fields = ('title','body','snippet')
         widgets = {
             'title': forms.TextInput(attrs={'class':'form-control','placeholder':"Type your title"}),
             'body': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your content"}),
+            'snippet': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your content"}),
         }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('body',)
+        widgets = {
+            # 'date_added': forms.DateField(),
+            'body': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your content"}),
+        }
+

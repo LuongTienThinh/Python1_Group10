@@ -1,18 +1,63 @@
-{% extends 'base.html' %} {% block content %} {% block title %} Django BlogIT
-{%endblock %}
+{% extends 'base.html' %}
+{% block title %} Django BlogIT{% endblock %}
+{% block content %} 
+  <h4>Current User: {{ user.username }}</h4>
+  <h1>{{post.title}}</h1>
+  <small>By {{post.author.first_name}} {{ post.author.last_name}} - {{ post.post_date }}</small>
+  <br />
+  <small>
+    {% if user.is_authenticated  %}
+      {% if user.id == post.author.id %}
+      
+    <a href="{% url 'update_post' post.pk %}">(Edit)</a>
 
-<h1>{{post.title}}</h1>
-<small>By {{post.author.first_name}} {{ post.author.last_name}} - {{ post.post_date }}</small>
-<br />
-<small
-  ><a href="{% url 'update_post' post.pk %}">(Edit)</a>
+    <a href="{% url 'delete_post' post.pk %}">(Delete)</a>
+      {% endif %}
+    {% endif %}
+  </small>
+  <hr />
+  <br />
+  {{ post.body | safe}}
+  <br />
+  <a href="{% url 'index' %}" class="btn btn-info">Back</a>
+  <hr>
+  <!-- comment -->
+ 
+  <form action="{% url 'like_post' post.pk %}" method="post">
+    {% csrf_token %}
 
-  <a href="{% url 'delete_post' post.pk %}">(Delete)</a>
-</small>
-<hr />
-<br />
-{{ post.body | safe}}
-<br />
-<a href="{% url 'index' %}" class="btn btn-info">Back</a>
-
+    {% if user.is_authenticated  %}
+      {% if liked  %}
+        <button type="submit" name="post_id", value="{{ post.id }}", class="btn btn-danger btn-sm">UnLike</button>
+      {% else %}
+        <button type="submit" name="post_id", value="{{ post.id }}", class="btn btn-primary btn-sm">Like</button>
+      {% endif %}
+    {% else %}
+      <small> <a href="{% url 'login' %}">Login</a> to like</small>
+    {% endif %}
+    : {{ total_likes }} Likes
+  </form>
+<hr>
+  <h2>Comment....</h2>
+  {{ post.total_comment }} comment
+<br>
+    {% if not post.comments.all %}
+      No Comments Yet... 
+      <br>
+    {% else %}
+    <!-- <a href="{% url 'add_comment' post.pk %}">Add Comment</a> -->
+    <br>
+    {% for comment in post.comments.all %}
+    <strong>
+      {{ comment.post.author }} -  {{ comment.date_added }} 
+    </strong>
+    <br>
+    <p>
+      {{ comment.body }}
+    </p>      
+    {% endfor %}
+    {% endif %}
+    <hr><br>
+  <br>
+    <a href="{% url 'add_comment' post.pk %}">Add Comment</a>
 {% endblock %}
