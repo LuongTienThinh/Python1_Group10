@@ -1,8 +1,8 @@
 from typing import Any
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 from django.views.generic import ListView, DetailView, CreateView,UpdateView, DeleteView
 from .models import Post,Category,Comment
-from .form import PostForm,EditForm,CommentForm
+from .form import PostForm,EditForm,CommentForm,AdminEditForm
 from django.urls import reverse_lazy,reverse
 from django.http import HttpResponseRedirect
 # from user.models import 
@@ -44,6 +44,13 @@ class DraftView(ListView):
 
     def get_queryset(self):
         return Post.objects.filter(is_published=False, author=self.request.user) 
+
+class AdminView(ListView):
+    model = Post
+    template_name = 'admin.html'  # Thay 'drafts.html' bằng template bạn muốn sử dụng cho trang drafts
+
+    def get_queryset(self):
+        return Post.objects.filter(is_published=False) 
 
 
 def CategoryListView(request):
@@ -100,6 +107,11 @@ class AddCategoryView(CreateView):
 class UpdatePostView(UpdateView):
     model = Post
     form_class = EditForm
+    template_name = 'update_post.html'
+    # fields = ['title','body']
+class AdminUpdatePostView(UpdateView):
+    model = Post
+    form_class = AdminEditForm
     template_name = 'update_post.html'
     # fields = ['title','body']
 

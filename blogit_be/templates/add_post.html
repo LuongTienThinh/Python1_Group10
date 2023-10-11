@@ -4,8 +4,7 @@
 <div class="form-group">
   <form method="post">
     {% csrf_token %} {{ form.media}}  {{ form.as_p }}
-    <label for="checkbox">Publish</label>
-    <input type="checkbox" id="toggleButton" name="checkbox" {% if post.is_published %} checked{% endif %}>
+
     <br><br>
     <button class="btn btn-info">Add Post</button>
     <br>

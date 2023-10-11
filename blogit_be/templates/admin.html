@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>Home Post</h1>
+<h1>Admin Draft</h1>
 <ul>
   {% for post in object_list %}
   <li>
@@ -11,30 +11,16 @@
     >
     - {{ post.author.first_name }} - {{ post.author.last_name }} - 
     {{  post.author.email }} - {{ post.post_date }}- 
-
-    <!-- if this is superuser -->
-
-    {% if user.is_superuser %}
     <small>
       <a href="{% url 'admin_update_post' post.pk %}">(Edit)</a>
 
       - <a href="{% url 'delete_post' post.pk %}">(Delete)</a>
     </small>
-    {% elif user.is_authenticated and user.is_staff %}
-      {% if user.id == post.author.id %} -
-    <small>
-      <a href="{% url 'update_post' post.pk %}">(Edit)</a>
-
-      - <a href="{% url 'delete_post' post.pk %}">(Delete)</a>
-    </small>
-      {% endif %}
-    {% endif %}
     <br />
     {{ post.snippet }}
     <!-- {{ post.body | slice:"200" | safe}} -->
-    {% endfor %}
-
   </li>
+  {% endfor %}
 </ul>
 
 {% endblock %}
