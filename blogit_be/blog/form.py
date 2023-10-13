@@ -16,7 +16,6 @@ class PostForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class':'form-control','placeholder':"Type your title"}),
             'author': forms.TextInput(attrs={'class':'form-control','id':'elder','type':'hidden'}),
-            # 'author': forms.Select(attrs={'class':'form-control'}),
             'category': forms.Select( choices=choice_list, attrs={'class':'form-control'}),
             'body': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your content"}),
             'snippet': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your snippet title"}),
@@ -31,6 +30,19 @@ class EditForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class':'form-control','placeholder':"Type your title"}),
             'body': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your content"}),
             'snippet': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your content"}),
+            # 'is_published': forms.BooleanField()
+
+        }
+class AdminEditForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('title','body','snippet','is_published')
+        widgets = {
+            'title': forms.TextInput(attrs={'class':'form-control','placeholder':"Type your title"}),
+            'body': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your content"}),
+            'snippet': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your content"}),
+            # 'is_published': forms.BooleanField()
+
         }
 
 class CommentForm(forms.ModelForm):
@@ -38,7 +50,6 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ('body',)
         widgets = {
-            # 'date_added': forms.DateField(),
             'body': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your content"}),
         }
 

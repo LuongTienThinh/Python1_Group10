@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 
-<h1>Draft</h1>
+<h1>Admin Draft</h1>
 <ul>
   {% for post in object_list %}
   <li>
@@ -11,15 +11,11 @@
     >
     - {{ post.author.first_name }} - {{ post.author.last_name }} - 
     {{  post.author.email }} - {{ post.post_date }}- 
-    {% if user.is_authenticated %}
-      {% if user.id == post.author.id %} -
     <small>
-      <a href="{% url 'update_post' post.pk %}">(Edit)</a>
+      <a href="{% url 'admin_update_post' post.pk %}">(Edit)</a>
 
       - <a href="{% url 'delete_post' post.pk %}">(Delete)</a>
     </small>
-      {% endif %}
-    {% endif %}
     <br />
     {{ post.snippet }}
     <!-- {{ post.body | slice:"200" | safe}} -->

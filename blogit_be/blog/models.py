@@ -21,7 +21,7 @@ class Post(models.Model):
     category = models.CharField(max_length=264,default='coding')
     snippet = models.CharField(max_length=264)
     likes = models.ManyToManyField(User,related_name='blog_posts')
-    is_published = models.BooleanField(default=True)
+    is_published = models.BooleanField(default=False)
     def total_likes(self):
         return self.likes.count()
 
@@ -29,7 +29,10 @@ class Post(models.Model):
         return  f"{self.title} | {self.author.username}"
 
     def get_absolute_url(self):
-        return reverse('index')
+        # if self.author.is_superuser:
+            return reverse('index')
+        # elif self.author.is_staff:
+        #     return reverse('admin')
     
     def total_comment(self):
         return self.comments.count()
