@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, re_path, include
-from .views import HomeView ,ArticleDetailView,AddPostView,UpdatePostView,DeletePostView,AddCategoryView,CategoryView,CategoryListView,LikeView,AddCommentView,DraftView,AdminView,AdminUpdatePostView
+from .views import HomeView ,ArticleDetailView,AddPostView,UpdatePostView,DeletePostView,AddCategoryView,CategoryView,CategoryListView,LikeView,AddCommentView,DraftView,AdminView,AdminUpdatePostView,DeleteCommentView
 urlpatterns = [
     # re_path(r'^$', views.index,name = 'index')
     path('',HomeView.as_view(), name = 'index'),
@@ -15,5 +15,7 @@ urlpatterns = [
     path('category/<str:cats>/',CategoryView,name = 'category'),
     path('category-list/',CategoryListView,name = 'category-list'),
     path('like/<int:pk>',LikeView, name='like_post'),
-    path('article/<int:pk>/comment/',AddCommentView.as_view(), name = 'add_comment'),
+    path('article/<int:pk>/comment/',AddCommentView.as_view(), name ='add_comment'),
+    path('article/<int:pk>/comment/<int:parent_id>', AddCommentView.as_view(), name='add_reply'),
+    path('article/<int:post_pk>/comment/<int:pk>/delete',DeleteCommentView.as_view(), name ='delete_comment'),
 ]   

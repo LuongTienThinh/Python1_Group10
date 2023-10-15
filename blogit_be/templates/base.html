@@ -123,7 +123,7 @@
             <a class="nav-link" href="{% url 'category-list' %}">Category List</a>
             {% endif %}
             <li class="nav">
-              {% if user.is_authenticated %}
+              {% if user.is_authenticated and user.is_superuser %}
               <a class="nav-link" href="{% url 'add_post' %}">Add Post</a>
               <a class="nav-link" href="{% url 'add_category' %}">Add Category</a>
               {% endif %}

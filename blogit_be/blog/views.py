@@ -79,6 +79,7 @@ class ArticleDetailView(DetailView):
         context['total_likes'] = total_likes
         context["cat_menu"] = cat_menu
         context["liked"] = liked
+        
         return context
 
 class AddPostView(CreateView):
@@ -93,11 +94,23 @@ class AddCommentView(CreateView):
     form_class = CommentForm
     template_name = 'add_comment.html'
 
-    success_url = reverse_lazy('index')
     # fields = '__all__'
+    # success_url = reverse_lazy('index')
     def form_valid(self,form):
         form.instance.post_id = self.kwargs['pk']
+        form.instance.parent_id = self.kwargs['parent_id']
         return super().form_valid(form)
+    
+    def get_success_url(self):
+        # Sử dụng reverse_lazy để tạo URL cho trang article_details với 'pk' là self.kwargs['pk']
+        return reverse('article_details', kwargs={'pk': self.kwargs['pk']})
+        # return reverse_lazy('article_details', kwargs={'pk': self.kwargs['pk']})
+
+    # def get_context_data(self, **kwargs):
+    #         context = super().get_context_data(**kwargs)
+    #         context['post_id'] = self.kwargs['pk']
+    #         context['parent_id'] = self.kwargs.get('parent_id')
+    #         return context
 
 class AddCategoryView(CreateView):
     model = Category
@@ -119,4 +132,16 @@ class DeletePostView(DeleteView):
     model = Post
     template_name = 'delete_post.html'
     success_url = reverse_lazy('index')
+
+class DeleteCommentView(DeleteView):
+    model = Comment
+    template_name = 'delete_comment.html'
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            return next_url
+        else:
+            return reverse_lazy('article_details', kwargs={'pk': self.kwargs['post_pk']})
+    
+
 

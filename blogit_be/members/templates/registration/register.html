@@ -1,12 +1,124 @@
-{% extends 'base.html' %} {% block title %}Register{% endblock %}
+{% extends 'base.html' %} {% block title %}Register{% endblock %} 
 {% block content %}
-<h1>Register...</h1>
-<div class="form-group">
-  <form method="post">
-    {% csrf_token %} {{ form.as_p }}
+<div
+  class="border border-2 py-3"
+  style="margin: 20px 150px; border-radius: 15px"
+>
+  <h1 class="text-center my-3">Register</h1>
+  <div class="login-form justify-content-center d-flex">
+    <div class="form-group" style="width: 90%">
+      <div class="form-group justify-content-center d-flex w-100">
+        <form method="post">
+          <input
+            type="hidden"
+            name="csrfmiddlewaretoken"
+            value="ycCVEHZK1WXdNl9Vg0DWT2LtMY4lQ690DHeu5ANx3Y1YvVMkydHm9iiMzmDcIMSS"
+          />
+          <p>
+            <label class="form-label" for="id_username">Username:</label>
+            <input
+              type="text"
+              name="username"
+              maxlength="150"
+              autofocus
+              class="form-control"
+              required
+              id="id_username"
+              placeholder="Username"
+            />
 
-    <button class="btn btn-info">Register</button>
-  </form>
+            <span class="helptext"
+              >Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+              only.</span>
+          </p>
+
+          <p>
+            <label class="form-label" for="id_first_name">First name:</label>
+            <input
+              type="text"
+              name="first_name"
+              class="form-control"
+              maxlength="100"
+              required
+              id="id_first_name"
+              placeholder="First name"
+              />
+          </p>
+
+          <p>
+            <label class="form-label" for="id_last_name">Last name:</label>
+            <input
+              type="text"
+              name="last_name"
+              class="form-control"
+              maxlength="100"
+              required
+              id="id_last_name"
+              placeholder="Last name"
+            />
+          </p>
+
+          <p>
+            <label class="form-label" for="id_email">Email:</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              maxlength="320"
+              required
+              id="id_email"
+              placeholder="Email"
+            />
+          </p>
+
+          <p>
+            <label class="form-label" for="id_password1">Password:</label>
+            <input
+              type="password"
+              name="password1"
+              autocomplete="new-password"
+              class="form-control"
+              required
+              id="id_password1"
+              placeholder="Password"
+            />
+
+            <span class="helptext"
+              ><ul>
+                <li>
+                  Your password can’t be too similar to your other personal
+                  information.
+                </li>
+                <li>Your password must contain at least 8 characters.</li>
+                <li>Your password can’t be a commonly used password.</li>
+                <li>Your password can’t be entirely numeric.</li>
+              </ul></span
+            >
+          </p>
+
+          <p>
+            <label class="form-label" for="id_password2">Password confirmation:</label>
+            <input
+              type="password"
+              name="password2"
+              autocomplete="new-password"
+              class="form-control"
+              required
+              id="id_password2"
+              placeholder="Password confirmation"
+            />
+
+          </p>
+
+          <span class="justify-content-center d-flex">
+            <button class="btn btn-info text-light px-5 py-2 fs-5">
+              Register
+            </button>
+          </span>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

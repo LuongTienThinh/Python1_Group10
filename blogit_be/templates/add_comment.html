@@ -1,21 +1,24 @@
 {% extends 'base.html' %}
-{% block title %} Comment On Blog Post {% endblock %}
 {% block content %}
 
 <h1>Add Comment...</h1>
-{% if user.is_authenticated %}
+
+{% if user.is_authenticated or user.is_superuser %}
 <div class="form-group">
   <form method="post">
-    {% csrf_token %} {{ form.as_p }}
-    <button class="btn btn-info">Add Comment</button>
+    {% csrf_token %} 
+    {{ form.as_p }}
+    <input type="hidden" name="parent_id" value="{{ parent_id }}">
+    <button class="btn btn-info">rep Comment</button>
   </form>
+
 </div>
+
 {% else %}
 <h1>Login to add Comment....</h1>
 <br>
 {% endif %}
 <br>
-<a href="{% url 'index' %}" class="btn btn-info">Back</a>
 
 <script>
   var name = "{{ user.id }}";
