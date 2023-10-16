@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% block title %} Django BlogIT{% endblock %}
+{% block title %} Django BlogIT {% endblock %}
 {% block content %} 
-  <!-- <h4>Current User: {{ user.username }}</h4> -->
+  <!-- title -->
   <h1>{{post.title}}</h1>
   <small>By {{post.author.first_name}} {{ post.author.last_name}} - {{ post.post_date }}</small>
   <br />
@@ -17,11 +17,12 @@
   </small>
   <hr />
   <br />
+  <!-- body -->
   {{ post.body | safe}}
   <br />
   <a href="{% url 'index' %}" class="btn btn-info">Back</a>
   <hr>
-  <!-- comment -->
+  <!-- like -->
  
   <form action="{% url 'like_post' post.pk %}" method="post">
     {% csrf_token %}
@@ -38,26 +39,90 @@
     : {{ total_likes }} Likes
   </form>
 <hr>
+
+<!-- comment -->
   <h2>Comment....</h2>
   {{ post.total_comment }} comment
 <br>
-    {% if not post.comments.all %}
+  {% if not post.comments.all %}
       No Comments Yet... 
       <br>
-    {% else %}
+  {% else %}
     <!-- <a href="{% url 'add_comment' post.pk %}">Add Comment</a> -->
     <br>
     {% for comment in post.comments.all %}
-    <strong>
-      {{ comment.post.author }} -  {{ comment.date_added }} 
-    </strong>
-    <br>
-    <p>
-      {{ comment.body }}
-    </p>      
+    {% if not comment.parent %}
+      <strong>
+        {{ comment.post.author }} -  {{ comment.date_added }} - {{ comment.id}} 
+      </strong>
+      {% if user.id == comment.post.author.id %}
+      <a href="{% url 'delete_comment' post_pk=post.id pk=comment.id %}"  class="text-decoration-none">(delete)&nbsp; </a> 
+      {% endif %}
+      <span  data-bs-toggle="collapse" href="#collapseReply" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <a class="reply-link text-decoration-none" href="#" data-comment-id="{{ comment.id }}">(reply)</a>
+      </span>
+    </a>
+      <p>
+        {{ comment.body }}
+      </p>
+<!-- reply comment -->
+      <div class="collapse" id="collapseReply">
+        <div class="reply-form" id="reply-form-{{ comment.id }}" style="display: block;">
+          <form method="post" action="{% url 'add_reply'  pk=post.pk parent_id=comment.id %}">
+            {% csrf_token %}
+            <input type="hidden" name="parent_id" value="{{ comment.id }}">
+            <label for="id_body">Reply:</label>
+            <textarea name="body" cols="40" rows="10" class="form-control" placeholder="Type your reply" required id="id_body"></textarea>
+            <button class="btn btn-info text-white">Add Reply</button>
+          </form>
+        </div>
+      </div>
+      {% if comment.replies.all %}
+      <div class="replies">
+        {% for reply in comment.replies.all %}
+            <div class="reply">
+              <strong>
+               &ensp; &ensp; &ensp; 
+               <img src="{{post.author.profile.profile_pic.url}}" alt="">
+               {{ reply.post.author }} -  {{ reply.date_added }} - {{ reply.id}} 
+              </strong>
+              {% if user.id == reply.post.author.id %}
+                <a href="{% url 'delete_comment' post_pk=post.id pk=reply.id %}">Xóa</a>
+              {% endif %}
+              <p>
+                &ensp; &ensp; &ensp; {{ reply.body }}
+              </p>
+            </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <br>
+        {% endif %}
     {% endfor %}
+    <br>
+
+
+    <br>
+    <!-- add comment -->
+    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+      Add Comment
+    </a>
+    <div class="collapse" id="collapseExample">
+        <div class="form-group">
+          <form method="post" action="{% url 'add_comment' post.pk %}"> 
+            {% csrf_token %}
+            <p>
+            <label for="id_body">comment:</label>
+            <textarea name="body" cols="40" rows="10" class="form-control" placeholder="Type your content" required id="id_body"> </textarea>
+            </p>
+            <input type="hidden" name="parent_id" value="None">
+            <button class="btn btn-info text-white">Add Comment</button>
+          </form>        
+        </div>
+    </div>
     {% endif %}
     <hr><br>
   <br>
-    <a href="{% url 'add_comment' post.pk %}">Add Comment</a>
+
+
 {% endblock %}

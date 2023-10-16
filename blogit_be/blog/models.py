@@ -13,6 +13,16 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('index')
 
+class Profile(models.Model):
+    user = models.OneToOneField(User,null=True,on_delete=models.CASCADE)
+    bio = models.TextField()
+    profile_pic = models.ImageField(null=True,blank=True,upload_to="images/profile/")
+    website_url = models.CharField(max_length=264,null=True,blank=True)
+
+    def __str__(self):
+        return  str(self.user)
+
+
 class Post(models.Model):
     title = models.CharField(max_length=264)
     author = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -29,20 +39,16 @@ class Post(models.Model):
         return  f"{self.title} | {self.author.username}"
 
     def get_absolute_url(self):
-        # if self.author.is_superuser:
             return reverse('index')
-        # elif self.author.is_staff:
-        #     return reverse('admin')
     
     def total_comment(self):
         return self.comments.count()
-
-
 
 class Comment(models.Model):
     post = models.ForeignKey(Post,related_name="comments",on_delete=models.CASCADE)
     body = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
 
     def __str__(self):
      return '%s - %s' % (self.post.title, self.post.author)
