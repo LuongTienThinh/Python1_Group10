@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post,Category,Comment
+from .models import Post,Category,Comment,Profile
 
 
 # cats = [('conding','coding'),('sports','sports'),('entertainment','entertainment')]
@@ -53,3 +53,7 @@ class CommentForm(forms.ModelForm):
             'body': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your content"}),
         }
 
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['user','bio', 'profile_pic','website_url']
