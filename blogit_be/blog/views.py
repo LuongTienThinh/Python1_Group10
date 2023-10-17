@@ -41,6 +41,7 @@ class HomeView(ListView):
         
         # Lấy 5 bài viết mới nhất
         latest_posts = Post.objects.filter(is_published=True).order_by('-post_date')[:5]
+        print(cat_menu)
         # Lấy 5 bài viết có số lượt comment và like nhiều nhất
         # popular_posts = Post.objects.filter(is_published=True).annotate(total_interactions=F('likes') + F('comments__count')).order_by('-total_interactions')[:5]
         # F để tham chiếu đến các trường của mô hình trong câu truy vấn
@@ -88,7 +89,9 @@ def CategoryListView(request):
 def CategoryView(request,cats):
     cat_menu_list = Category.objects.all()
     category_post =Post.objects.filter(category = cats.replace('-',' '))
-    return render(request,'categories.html',{'cats':cats.title().replace('-',' '),'category_post':category_post,'cat_menu':cat_menu_list})
+    latest_posts = Post.objects.filter(is_published=True).order_by('-post_date')[:5]
+    print(category_post)
+    return render(request,'categories.html',{'cats':cats.title().replace('-',' '),'category_post':category_post,'cat_menu':cat_menu_list,'latest_posts':latest_posts})
 
 class ArticleDetailView(DetailView):
     model = Post
