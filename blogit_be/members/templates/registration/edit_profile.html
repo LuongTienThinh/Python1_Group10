@@ -1,0 +1,56 @@
+{% extends 'navbar.html' %} 
+
+{% block title %} Edit Profile {%endblock %}
+
+{% block content %} 
+
+<br>
+<div
+class="border border-2 py-3"
+style="margin: 20px 150px; border-radius: 15px"
+>
+<div class="edit-form justify-content-center d-flex">
+    <div class="form-group " style="width: 65%;">
+        <form method="post">
+                <h1 class="text-center my-3">Edit Profile</h1>
+
+                {% csrf_token %}
+
+                <input type="hidden" name="csrfmiddlewaretoken" value="q91L9yPdB65bP1wYLgOTCHmCnv6yWE9KYehwZC1U5cMEs6XEGsBLheX67kav2VBq">
+                <div class="mb-3">
+                    <label for="id_username">Username:</label>
+                    <input type="text" name="username" value="thang" class="form-control" maxlength="100" required id="id_username">       
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_first_name">First name:</label>
+                    <input type="text" name="first_name" value="thang" class="form-control" maxlength="100" required id="id_first_name">
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_last_name">Last name:</label>
+                    <input type="text" name="last_name" value="nguyen" class="form-control" maxlength="100" required id="id_last_name">
+                </div> 
+
+                <div class="mb-3">
+                    <label for="id_email">Email:</label>
+                    <input type="email" name="email" value="bang4471@mail.com" class="form-control" maxlength="320" required id="id_email">
+                </div>  
+            
+                <label>Password:</label>
+                <div disabled id="id_password">
+                <strong>algorithm</strong>: <bdi>pbkdf2_sha256</bdi>
+                <strong>iterations</strong>: <bdi>600000</bdi>
+                <strong>salt</strong>: <bdi>J85th0****************</bdi>
+                <strong>hash</strong>: <bdi>4SiJTa**************************************</bdi>
+                </div>      
+                <span class="helptext">Raw passwords are not stored, so there is no way to see this user’s password, but you can change the password using <a href="{% url 'password_change' %} ">this form</a>.</span>
+            
+                <span class="justify-content-center d-flex">            
+                    <button class="btn btn-info text-light px-5 py-2 my-2 fs-5">Edit Profile</button>
+                </span>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

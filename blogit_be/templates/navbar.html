@@ -11,37 +11,34 @@
       crossorigin="anonymous"
     />
     <style>
-      .nav-search input {
-        min-width: 150px;
+      .navbar-toggler:focus {
+        box-shadow: none;
       }
       .dropdown-menu {
         left: auto !important;
         position: absolute !important;
         right: 0;
       }
-      .dropdown .btn, .nav-link {
+      .dropdown .btn, .nav .nav-link {
         box-shadow: none;
-        color: #ffffff !important;
+        color: #ffffff;
       }
-      .admin-action .nav-link {
-        padding: 0.5rem 0.8rem !important;
+      .user-info-left {
+        display: inline-block;
       }
-      .left-nav {
-        width: 15%;
-      }
-      .right-nav {
-        width: 25%;
+      .user-info-right {
+        display: none;
       }
       .main-content {
         width: 60%;
       }
-      @media screen and (min-width: 768px) {
-        .nav-search input {
-          min-width: 300px;
+      @media screen and (min-width: 992px) {
+        .user-info-left {
+          display: none;
         }
-      }
-      .main-content .card + .card, .right-nav .card + .card {
-        margin-top: 2rem;
+        .user-info-right {
+          display: inline-block;
+        }
       }
     </style>
   </head>
@@ -68,7 +65,7 @@
               {{ user.username }}
             </button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Edit Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
               <li><a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a></li>
               <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
             </ul>
@@ -88,8 +85,9 @@
               aria-current="page"
               href="{% url 'admin' %}"
             >
-              Draft
+              Admin
             </a>
+           
             {% endif %}
             <!-- Category menu -->
             <!-- {% if cat_menu %}
@@ -133,14 +131,9 @@
 
           </div>
         </div>
-        {% endif %}
-        <!-- search -->
-        <form class="nav-search d-flex justify-content-center" action="{% url 'search_posts' %}" method="get">
-          <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success text-white border-light" type="submit">Search</button>
-        </form>
+
         <!-- user info -->
-        <div class="user-info">
+        <div class="user-info user-info-right">
           {% if user.is_authenticated %}
           <div class="dropdown">
             <button class="btn btn-user-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -162,43 +155,13 @@
       </div>
     </nav>
     <div class="d-flex justify-content-between mx-3">
-      <div class="left-nav">
-        <h3 class="text-center py-4">Category List</h3>
-        {% for item in cat_menu %}
-        <h5>
-          <a class="dropdown-item" href="{%  url 'category' item|slugify %}">
-            <div class="card-body">
-              {{ item }}
-            </div>
-          </a>
-        </h5>
-        {% endfor %}
-      </div>
+        <div class="left-nav">          
+        </div>
       <div class="main-content">
         {% block content %} {% endblock %}
       </div>
-      <div class="right-nav">
-        <h2 class="text-center py-4">Recent Posts</h2>
-        {% for post in latest_posts %}
-        <div class="card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between">
-              <div class="post-info">
-                <div class="card-title text-capitalize">
-                  <a href="{% url 'article_details' post.pk %}" class="post-title text-dark text-decoration-none h4 m-auto">{{ post.title }}</a>
-                </div>
-                <div class="author-info">
-                    {{ post.author.first_name }} {{ post.author.last_name }} - {{ post.post_date }}
-                </div>
-              </div>
-              <div class="user-action d-flex justify-content-center align-items-center">
-                <a href="{% url 'article_details' post.pk %}" class="btn btn-primary">View post</a>
-              </div>
-            </div>
-          </div>
+        <div class="right-nav">          
         </div>
-        {% endfor %}
-      </div>
     </div>
   </body>
   <script
