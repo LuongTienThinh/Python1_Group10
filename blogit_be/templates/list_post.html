@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block content %}
+{% block list_block %}
 
 <style>
   .post-title:hover, .post-category:hover {
@@ -9,12 +9,11 @@
   }
 </style>
 
-<h1 class="text-center m-0 py-4">Home Post</h1>
-
-<ul style="padding: 0; margin: 0px 20px;">
+<h1 class="text-center m-0 py-4"> {% block title %} {% endblock %} </h1>
+<ul style="padding: 0; margin: 10px 20px;">
   <li style="list-style: none; padding: 0; margin: 0;">
     {% for post in object_list %}
-    <div class="card">
+    <div class="card mt-4">
       <div class="card-body">
         <div class="post-info d-flex justify-content-between">
           <div class="card-title d-flex align-items-end text-capitalize">
@@ -41,7 +40,7 @@
             </div>
           </div>
           <div class="user-action" style="text-align: end;">
-            {% if user.is_superuser  %}
+            {% if user.is_superuser %}
             <a href="{% url 'delete_post' post.pk %}" class="btn btn-danger">Delete post</a>
             <a href="{% url 'admin_update_post' post.pk %}" class="btn btn-success">Edit post</a>
             {% endif %}
