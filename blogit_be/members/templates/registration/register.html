@@ -12,11 +12,7 @@ style="margin: 20px 150px; border-radius: 15px"
   <div class="form-group" style="width: 90%">
     <div class="form-group justify-content-center d-flex w-100">
       <form method="post">
-        <input
-          type="hidden"
-          name="csrfmiddlewaretoken"
-          value="ycCVEHZK1WXdNl9Vg0DWT2LtMY4lQ690DHeu5ANx3Y1YvVMkydHm9iiMzmDcIMSS"
-        />
+        {% csrf_token %}       
         <p>
           <label class="form-label" for="id_username">Username:</label>
           <input

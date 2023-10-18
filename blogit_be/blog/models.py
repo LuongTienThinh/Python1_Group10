@@ -18,6 +18,7 @@ class Profile(models.Model):
     bio = models.TextField()
     profile_pic = models.ImageField(null=True,blank=True,upload_to="images/profile/")
     website_url = models.CharField(max_length=264,null=True,blank=True)
+    github_url = models.CharField(max_length=264,null=True,blank=True)
 
     def __str__(self):
         return  str(self.user)
@@ -25,6 +26,7 @@ class Profile(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=264)
+    header_image = models.ImageField(null=True,blank=True,upload_to="images/")
     author = models.ForeignKey(User,on_delete=models.CASCADE)
     body = RichTextField(blank=True,null=True)
     post_date = models.DateField(auto_now_add=True)
@@ -43,13 +45,21 @@ class Post(models.Model):
     
     def total_comment(self):
         return self.comments.count()
+    
+    @classmethod
+    def get_posts_with_most_comments_and_likes(cls, limit=5):
+        return cls.objects.annotate(num_comments=models.Count('comments'),
+                                    num_likes=models.Count('likes')).order_by(-(models.F('num_comments') + models.F('num_likes')))[:limit]
 
 class Comment(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)  # Thêm trường user
     post = models.ForeignKey(Post,related_name="comments",on_delete=models.CASCADE)
     body = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
 
     def __str__(self):
-     return '%s - %s' % (self.post.title, self.post.author)
+        return  f"{self.user}"
+
+        
 

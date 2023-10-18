@@ -12,14 +12,14 @@ for item in choices:
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title','author','category','body','snippet')
+        fields = ('title','author','category','body','snippet' ,'is_published' ,'header_image')
         widgets = {
             'title': forms.TextInput(attrs={'class':'form-control','placeholder':"Type your title"}),
             'author': forms.TextInput(attrs={'class':'form-control','id':'elder','type':'hidden'}),
             'category': forms.Select( choices=choice_list, attrs={'class':'form-control'}),
             'body': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your content"}),
             'snippet': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your snippet title"}),
-            'is_published': forms.BooleanField()
+            # 'is_published': forms.BooleanField()
         }
 
 class EditForm(forms.ModelForm):
@@ -36,7 +36,7 @@ class EditForm(forms.ModelForm):
 class AdminEditForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title','body','snippet','is_published')
+        fields = ('title','body','snippet','is_published','header_image')
         widgets = {
             'title': forms.TextInput(attrs={'class':'form-control','placeholder':"Type your title"}),
             'body': forms.Textarea(attrs={'class':'form-control','placeholder':"Type your content"}),

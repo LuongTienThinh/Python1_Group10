@@ -11,12 +11,11 @@ style="margin: 20px 150px; border-radius: 15px"
 >
 <div class="edit-form justify-content-center d-flex">
     <div class="form-group " style="width: 65%;">
+        <h1 class="text-center my-3">Edit Profile</h1>
         <form method="post">
-                <h1 class="text-center my-3">Edit Profile</h1>
-
+            
                 {% csrf_token %}
 
-                <input type="hidden" name="csrfmiddlewaretoken" value="q91L9yPdB65bP1wYLgOTCHmCnv6yWE9KYehwZC1U5cMEs6XEGsBLheX67kav2VBq">
                 <div class="mb-3">
                     <label for="id_username">Username:</label>
                     <input type="text" name="username" value="thang" class="form-control" maxlength="100" required id="id_username">       

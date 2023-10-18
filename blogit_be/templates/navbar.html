@@ -83,8 +83,10 @@
         <!-- user info -->
         <div class="user-info">
           {% if user.is_authenticated %}
-          <div class="dropdown">
-            <button class="btn btn-user-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+          <div class="dropdown text-end">
+            <button class="btn btn-user-info dropdown-toggle" style="width: min-content;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{{ user.profile.profile_pic.url }}" class="rounded m-auto" style="width: 50%;" alt="">
               {{ user.username }}
             </button>
             <ul class="dropdown-menu">
@@ -102,14 +104,14 @@
         </div>
       </div>
     </nav>
-    <div class="d-flex justify-content-between mx-3">
+    <div class="d-flex justify-content-between mx-1">
         <div class="left-nav">
           {% block left-nav %} {% endblock %}
         </div>
       <div class="main-content">
         {% block content %} {% endblock %}
       </div>
-        <div class="right-nav">
+        <div class="right-nav ms-2">
           {% block right-nav %} {% endblock %}
         </div>
     </div>
