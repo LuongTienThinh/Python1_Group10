@@ -86,7 +86,11 @@
 
           <div class="dropdown text-end">
             <button class="btn btn-user-info dropdown-toggle" style="width: min-content;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {% if user.profile.profile_pic %}
               <img src="{{ user.profile.profile_pic.url }}" class="rounded m-auto" style="width: 50%;" alt="">
+              {% else %}
+              <img src="../media/images/download.png" class="rounded m-auto" style="width: 50%;" alt="">
+              {% endif %}
               {{ user.username }}
             </button>
             <ul class="dropdown-menu">

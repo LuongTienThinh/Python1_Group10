@@ -1,32 +1,42 @@
 {% extends 'base.html' %}
 {% block title %} Django BlogIT {% endblock %}
 {% block content %} 
-  <!-- title -->
-  <h1>{{post.title}}</h1>
-  <small>By {{post.author.first_name}} {{ post.author.last_name}} - {{ post.post_date }}</small>
-  <br />
-  <small>
-    {% if user.is_authenticated  %}
-      {% if user.id == post.author.id %}
-      
-    <a href="{% url 'update_post' post.pk %}">(Edit)</a>
 
-    <a href="{% url 'delete_post' post.pk %}">(Delete)</a>
+  <style>
+    .comment-user {
+      margin-top: 20px !important;
+    }
+    .comment-user .comment {
+      width: calc(100% - 60px);
+    }
+  </style>
+
+  <!-- title -->
+  <div class="post-header d-flex justify-content-between align-items-end">
+    <div class="title">
+      <h1>{{post.title}}</h1>
+      <small>By {{post.author.first_name}} {{ post.author.last_name}} - {{ post.post_date }}</small>
+    </div>
+    <small>
+      {% if user.is_authenticated  %}
+        {% if user.id == post.author.id %}
+        <a class="btn btn-danger" href="{% url 'delete_post' post.pk %}">Delete</a>
+        <a class="btn btn-success" href="{% url 'update_post' post.pk %}">Edit</a>
+        {% endif %}
       {% endif %}
-    {% endif %}
-  </small>
+    </small>
+  </div>
   <hr />
   <br />
  
-    <!-- body -->
-    {% if post.header_image %}
-          <div class="image-header text-center">
-            <img src="{{ post.header_image.url }}" width="95%">
-          </div>   
-    {% endif %}
+  <!-- body -->
+  {% if post.header_image %}
+  <div class="image-header text-center">
+    <img src="{{ post.header_image.url }}" width="95%">
+  </div>   
+  {% endif %}
   {{ post.body | safe}}
   <br />
-  <a href="{% url 'index' %}" class="btn btn-info">Back</a>
   <hr>
   <!-- like -->
  
@@ -40,7 +50,7 @@
         <button type="submit" name="post_id", value="{{ post.id }}", class="btn btn-primary btn-sm">Like</button>
       {% endif %}
     {% else %}
-      <small> <a href="{% url 'login' %}">Login</a> to like</small>
+      <small> <button class="btn btn-info "><a class="text-white text-decoration-none" href="{% url 'login' %}">Login</a></button> to like</small>
     {% endif %}
     : {{ total_likes }} Likes
   </form>
@@ -49,7 +59,6 @@
 <!-- comment -->
   <h2>Comment....</h2>
   {{ post.total_comment }} comment
-<br>
   {% if not post.comments.all %}
       No Comments Yet... 
       <br>
@@ -71,33 +80,38 @@
             </div>
         </div>
       {% else %}
-        <h3><a href="{% url 'login' %}">Login</a> to comment</h3>
+        <h3><button class="btn btn-info "><a class="text-white text-decoration-none" href="{% url 'login' %}">Login</a></button> to comment</h3>
       {% endif %}
   {% else %}
     <!-- <a href="{% url 'add_comment' post.pk %}">Add Comment</a> -->
     <br>
     {% for comment in post.comments.all %}
     {% if not comment.parent %}
-      <strong>
-        <img src="media\images\download.png" class="img-thumbnail rounded" style="width: 6%;" alt="">
+    <div class="d-flex comment-user">
+      <div class="img">
+        <img src="media\images\download.png" class="img-thumbnail rounded" style="width: 60px;" alt="">
+      </div>
+      <div class="comment">
+        <strong>
         {% if comment.user %}
         {{ comment.user.username }}
-    {% else %}
+        {% else %}
         {{ user.username }}
-    {% endif %} -  {{ comment.date_added }}
-      </strong>
-      {% if user.id == comment.post.author.id %}
-      <a href="{% url 'delete_comment' post_pk=post.id pk=comment.id %}"  class="text-decoration-none">(delete)&nbsp; </a> 
-      {% endif %}
-      {% if user.is_authenticated or user.is_superuser %}
-      <span  data-bs-toggle="collapse" href="#collapseReply{{ comment.id }}" role="button" aria-expanded="false" aria-controls="collapseExample">
-        <a class="reply-link text-decoration-none" href="#" data-comment-id="{{ comment.id }}">(reply)</a>
-      </span>
-      {% endif %}
-    </a>
-      <p>
-        {{ comment.body }}
-      </p>
+        {% endif %} -  {{ comment.date_added }}
+        </strong>
+        <div>
+          {{ comment.body }}
+        </div>
+      </div>
+    </div>
+    {% if user.id == comment.post.author.id %}
+    <a href="{% url 'delete_comment' post_pk=post.id pk=comment.id %}" class="text-decoration-none" style="margin-left: 80px;">(delete)&nbsp; </a> 
+    {% endif %}
+    {% if user.is_authenticated or user.is_superuser %}
+    <span  data-bs-toggle="collapse" href="#collapseReply{{ comment.id }}" role="button" aria-expanded="false" aria-controls="collapseExample">
+      <a class="reply-link text-decoration-none" href="#" data-comment-id="{{ comment.id }}">(reply)</a>
+    </span>
+    {% endif %}
 <!-- reply comment -->
       <div class="collapse" id="collapseReply{{ comment.id }}">
         <div class="reply-form" id="reply-form-{{ comment.id }}" style="display: block;">
@@ -116,34 +130,34 @@
         </div>
       </div>
       {% if comment.replies.all %}
-      <div class="replies">
+      <div class="replies" style="margin-left: 80px;">
         {% for reply in comment.replies.all %}
-            <div class="reply">
-              <strong>
-               &ensp; &ensp; &ensp; 
-               <img src="media\images\download.png" class="img-thumbnail rounded" style="width: 6%;" alt="">
-               {{ reply.post.author.username}} -  {{ reply.date_added }} 
-              </strong>
-              {% if user.id == reply.post.author.id %}
-                <a href="{% url 'delete_comment' post_pk=post.id pk=reply.id %}">Xóa</a>
-              {% endif %}
-              <p>
-                &ensp; &ensp; &ensp; {{ reply.body }}
-              </p> 
-            </div>
-            {% endfor %}
+        <div class="d-flex comment-user">
+          <div class="img">
+            <img src="media\images\download.png" class="img-thumbnail rounded" style="width: 60px;" alt="">
           </div>
+          <div class="comment">
+            <strong>
+              {{ reply.post.author.username}} -  {{ reply.date_added }}
+            </strong>
+            <div>
+              {{ reply.body }}
+            </div>
+          </div>
+        </div>
+        {% if user.id == reply.post.author.id %}
+        <a href="{% url 'delete_comment' post_pk=post.id pk=reply.id %}" class="text-decoration-none" style="margin-left: 80px;">(delete)</a>
         {% endif %}
-        <br>
-        {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+      <br>
+      {% endif %}
     {% endfor %}
-    <br>
 
-
-  
     <!-- add comment -->
       {% if user.is_authenticated or user.is_superuser %}
-        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <a class="btn btn-primary mt-4" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
           Add Comment
         </a>
         <div class="collapse" id="collapseExample">
@@ -166,6 +180,6 @@
     {% endif %}
     <hr><br>
   <br>
-
+  <a href="{% url 'index' %}" class="btn btn-info">Back</a>
 
 {% endblock %}

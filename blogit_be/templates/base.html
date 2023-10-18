@@ -22,19 +22,19 @@
 
     <h2 class="text-center py-4">Recent Posts</h2>
     {% for post in latest_posts %}
-    <div class="card">
+    <div class="card" style="background-color: rgb(217, 267, 227);" >
       <div class="card-body">
         <div class="d-flex justify-content-between">
           <div class="post-info">
             <div class="card-title text-capitalize">
-              <a href="{% url 'article_details' post.pk %}" class="post-title text-dark text-decoration-none h4 m-auto">{{ post.title }}</a>
+              <a href="{% url 'article_details' post.pk %}" class="post-title text-dark text-decoration-none h5 m-auto">{{ post.title }}</a>
             </div>
             <div class="author-info">
                 {{ post.author.first_name }} {{ post.author.last_name }} - {{ post.post_date }}
             </div>
           </div>
           <div class="user-action d-flex justify-content-center align-items-center">
-            <a href="{% url 'article_details' post.pk %}" class="btn btn-primary">View post</a>
+            <a href="{% url 'article_details' post.pk %}" class="btn btn-success">View</a>
           </div>
         </div>
       </div>
@@ -44,12 +44,12 @@
 
     <h2 class="text-center py-4 mt-3">Popular Posts</h2>
     {% for post in popular_posts %}
-    <div class="card">
+    <div class="card"  style="background-color: azure;" >
       <div class="card-body">
         <div class="d-flex justify-content-between">
           <div class="post-info">
             <div class="card-title text-capitalize">
-              <a href="{% url 'article_details' post.pk %}" class="post-title text-dark text-decoration-none h4 m-auto">{{ post.title }}</a>
+              <a href="{% url 'article_details' post.pk %}" class="post-title text-dark text-decoration-none h5 m-auto">{{ post.title }}</a>
             </div>
             <div class="author-info">
                 {{ post.author.first_name }} {{ post.author.last_name }} - {{ post.post_date }}
@@ -68,7 +68,7 @@
           </div>
           </div>
           <div class="user-action d-flex justify-content-center align-items-center">
-            <a href="{% url 'article_details' post.pk %}" class="btn btn-primary">View post</a>
+            <a href="{% url 'article_details' post.pk %}" class="btn btn-primary">View</a>
           </div>
         </div>
       </div>
